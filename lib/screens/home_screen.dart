@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:simpleapiapp/models/quote.dart';
 import 'package:simpleapiapp/widgets/display_quote.dart';
+import 'package:simpleapiapp/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF0F2027),
+        backgroundColor: kFloatingActionButtonColour,
         child: Icon(
           Icons.navigate_next,
           size: 35.0,
@@ -55,13 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFF0F2027), Color(0xFF2C5364)],
-              ),
-            ),
+            decoration: kBackgroundGradientDecoration,
           ),
           FutureBuilder(
               future: quote,
@@ -74,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
                 }
-
                 // By default, show a loading spinner.
                 return Center(child: CircularProgressIndicator());
               }),

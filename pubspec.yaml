@@ -67,9 +67,8 @@ flutter:
         - asset: assets\fonts\Raleway-Black.ttf
     - family: Eczar
       fonts:
-        - asset: assets/fonts/Eczar-Medium.ttf
         - asset: assets/fonts/Eczar-SemiBold.ttf
-        - asset: assets/fonts/Eczar-Medium.ttf
+
 
   #
   # For details regarding fonts from package dependencies,

@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:simpleapiapp/constants.dart';
 
 class DisplayQuote extends StatelessWidget {
   final String quoteText;
@@ -15,28 +14,8 @@ class DisplayQuote extends StatelessWidget {
       child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
-              quoteText,
-              style: TextStyle(
-                fontFamily: 'Eczar',
-                fontSize: 25,
-                color: Colors.white54,
-              ),
-            ),
-            Text(
-              " ~ $quoteAuthor",
-              style: TextStyle(
-                fontFamily: 'Raleway',
-                fontSize: 30,
-                shadows: [
-                  Shadow(
-                    blurRadius: 10.0,
-                    color: Colors.grey,
-                    offset: Offset(3.0, 3.0),
-                  ),
-                ],
-              ),
-            ),
+            Text(quoteText, style: kQuoteTextStyle),
+            Text(" ~ $quoteAuthor", style: kQuoteAuthorStyle),
           ]),
     );
   }
