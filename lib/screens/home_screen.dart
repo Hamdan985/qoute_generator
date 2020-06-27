@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-const String apiKey = '5705a85b-1425-4ef8-a1e5-e7e0f13c0699';
+import 'package:simpleapiapp/models/quote.dart';
+import 'package:simpleapiapp/widgets/display_quote.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,32 +11,75 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String url = 'https://api.thecatapi.com/v1/images/search?limit=5&page=10&order=Desc#';
+  String url = 'https://api.quotable.io/random';
 
+  Future<Quote> quote;
 
+  @override
+  void initState() {
+    super.initState();
+    apiCall();
+  }
 
-@override
-void initState() { 
-  super.initState();
- apiCall();
-  
-}
+  void apiCall() {
+    setState(() {
+      quote = fetchQuote();
+    });
+  }
 
- void apiCall() async {
-    var response = await http.get(url);
-    var data = response.body;
-    List<String> urlList;
+  Future<Quote> fetchQuote() async {
+    final response = await http.get(url);
 
-    for (var i = 0; i < 5; i++) {
-      var imageUrl = jsonDecode(data)[i]['url'];
-      print(imageUrl);
-      urlList.insert(i,imageUrl);
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return Quote.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load Quote');
     }
-    // print(urlList);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF0F2027),
+        child: Icon(
+          Icons.navigate_next,
+          size: 35.0,
+        ),
+        onPressed: apiCall,
+      ),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF0F2027), Color(0xFF2C5364)],
+              ),
+            ),
+          ),
+          FutureBuilder(
+              future: quote,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return DisplayQuote(
+                    quoteText: snapshot.data.quoteText,
+                    quoteAuthor: snapshot.data.quoteAuthor,
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+
+                // By default, show a loading spinner.
+                return Center(child: CircularProgressIndicator());
+              }),
+        ],
+      ),
+    );
   }
 }
