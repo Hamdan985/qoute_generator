@@ -12,11 +12,12 @@ class DisplayQuote extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 26.0),
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Text(quoteText, style: kQuoteTextStyle),
-            Text(" ~ $quoteAuthor", style: kQuoteAuthorStyle),
-          ]),
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Text(quoteText, style: kQuoteTextStyle),
+          Text(" ~ $quoteAuthor", style: kQuoteAuthorStyle),
+        ],
+      ),
     );
   }
 }
