@@ -15,13 +15,15 @@ class _HomeScreenState extends State<HomeScreen> {
   String url = 'https://api.quotable.io/random';
 
   Future<Quote> quote;
-  Future<Quote> secondQuote;
+  Future<Quote> nextQuote;
   bool check = false;
 
   @override
   void initState() {
     super.initState();
     apiCall();
+    apiCall();
+
   }
 
   void apiCall() {
@@ -33,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         print('second quote');
 
-        secondQuote = fetchQuote();
+        nextQuote = fetchQuote();
         check = ! check;
       }
     });
@@ -75,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: kBackgroundGradientDecoration,
           ),
           FutureBuilder(
-              future: check ? secondQuote : quote,
+              future: check ? nextQuote : quote,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return DisplayQuote(
