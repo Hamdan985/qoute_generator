@@ -16,7 +16,7 @@ const kFloatingActionButtonColour = Color(0xFF0F2027);
 const kQuoteTextStyle = TextStyle(
   fontFamily: 'Eczar',
   fontSize: 25,
-  color: Colors.white54,
+  color: Colors.white70,
 );
 
 const kQuoteAuthorStyle = TextStyle(

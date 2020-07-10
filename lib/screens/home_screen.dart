@@ -30,14 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
           size: 35.0,
         ),
         onPressed: () {
-          if (check == false) {
-            context.read<Quotes>().apiCall();
-            check = !check;
-          } else {
-            context.read<Quotes>().apiCall();
-            check = !check;
-          }
-        }, //// call the api call here
+          context.read<Quotes>().apiCall();
+          check = !check;
+        },
       ),
       appBar: AppBar(
         title: Text('Quotes API app'),
