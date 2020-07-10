@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:simpleapiapp/models/quote.dart';
 import 'package:simpleapiapp/widgets/display_quote.dart';
 import 'package:simpleapiapp/constants.dart';
+import '../services/quotes.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,47 +11,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String url = 'https://api.quotable.io/random';
-
-  Future<Quote> quote;
-  Future<Quote> nextQuote;
   bool check = false;
 
   @override
   void initState() {
     super.initState();
-    apiCall();
-    apiCall();
-
-  }
-
-  void apiCall() {
-    setState(() {
-      if (check == false) {
-        print('quote');
-        check = !check;
-        quote = fetchQuote();
-      } else {
-        print('second quote');
-
-        nextQuote = fetchQuote();
-        check = ! check;
-      }
-    });
-  }
-
-  Future<Quote> fetchQuote() async {
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      return Quote.fromJson(json.decode(response.body));
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load Quote');
-    }
+    context.read<Quotes>().apiCall();
+    context.read<Quotes>().apiCall();
   }
 
   @override
@@ -64,7 +29,15 @@ class _HomeScreenState extends State<HomeScreen> {
           Icons.navigate_next,
           size: 35.0,
         ),
-        onPressed: apiCall,
+        onPressed: () {
+          if (check == false) {
+            context.read<Quotes>().apiCall();
+            check = !check;
+          } else {
+            context.read<Quotes>().apiCall();
+            check = !check;
+          }
+        }, //// call the api call here
       ),
       appBar: AppBar(
         title: Text('Quotes API app'),
@@ -75,21 +48,23 @@ class _HomeScreenState extends State<HomeScreen> {
         children: <Widget>[
           Container(
             decoration: kBackgroundGradientDecoration,
+            child: FutureBuilder(
+                future: check
+                    ? context.watch<Quotes>().nextQuote
+                    : context.watch<Quotes>().quote,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return DisplayQuote(
+                      quoteText: snapshot.data.quoteText,
+                      quoteAuthor: snapshot.data.quoteAuthor,
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("${snapshot.error}"));
+                  }
+                  // By default, show a loading spinner.
+                  return Center(child: CircularProgressIndicator());
+                }),
           ),
-          FutureBuilder(
-              future: check ? nextQuote : quote,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return DisplayQuote(
-                    quoteText: snapshot.data.quoteText,
-                    quoteAuthor: snapshot.data.quoteAuthor,
-                  );
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                }
-                // By default, show a loading spinner.
-                return Center(child: CircularProgressIndicator());
-              }),
         ],
       ),
     );

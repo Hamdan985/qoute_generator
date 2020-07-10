@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 const kStartBackgroundGradient = Color(0xFF0F2027);
 const kendBackgroundGradient = Color(0xFF2C5364);
 
-
 const kBackgroundGradientDecoration = BoxDecoration(
   gradient: LinearGradient(
     begin: Alignment.topCenter,
@@ -27,7 +26,7 @@ const kQuoteAuthorStyle = TextStyle(
     Shadow(
       blurRadius: 10.0,
       color: Colors.grey,
-      offset: Offset(3.0, 3.0),
+      offset: Offset(2.0, 2.0),
     ),
   ],
 );

@@ -14,8 +14,14 @@ class DisplayQuote extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Text(quoteText, style: kQuoteTextStyle),
-          Text(" ~ $quoteAuthor", style: kQuoteAuthorStyle),
+          Text(
+            quoteText,
+            style: kQuoteTextStyle,
+          ),
+          Text(
+            " ~ $quoteAuthor",
+            style: kQuoteAuthorStyle,
+          ),
         ],
       ),
     );
